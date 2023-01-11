@@ -1,0 +1,18 @@
+.home-container{
+}
+.home-content{
+    margin-top: 10rem;
+    color: black;
+
+}
+.description{
+    margin: 3rem 0 3rem 0;
+    font-size: large;
+}
+@media only screen and (max-width: 820px) {
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
