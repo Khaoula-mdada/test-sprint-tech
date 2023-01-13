@@ -1,0 +1,94 @@
+<div class="container">
+    <form class="form" [formGroup]="form">
+        <!--First_name -->
+        <mat-form-field class="full-width">
+            <mat-label>Prénom :</mat-label>
+            <input matInput formControlName="first_nameControl"  />
+            <mat-error *ngIf="
+        form?.get('first_nameControl').errors?.pattern ||
+        form?.get('first_nameControl').errors?.required
+      ">
+                {{ errors.get("firstName-error") }}
+            </mat-error>
+        </mat-form-field>
+        <!--Last_name -->
+        <mat-form-field class="full-width">
+            <mat-label>Nom :</mat-label>
+            <input matInput formControlName="last_nameControl"  />
+            <mat-error *ngIf="
+        form?.get('last_nameControl').errors?.pattern ||
+        form?.get('last_nameControl').errors?.required
+      ">
+                {{ errors.get("name-error") }}
+            </mat-error>
+        </mat-form-field>
+
+        <!--Email -->
+
+        <mat-form-field class="full-width">
+            <mat-label>Email</mat-label>
+            <input type="email" matInput formControlName="emailControl" placeholder="Ex. xxxx@envibus.com" />
+            <mat-error *ngIf="
+        form?.get('emailControl').hasError('email') ||
+        form?.get('emailControl').errors?.required
+      ">
+                {{ errors.get("email-error") }}
+            </mat-error>
+        </mat-form-field>
+
+        <!--Birth-day -->
+        <mat-form-field class="full-width" style="width: 100%">
+            <mat-label>Date de naissance</mat-label>
+            <div class="date">
+                <input matInput [matDatepicker]="picker" [min]="maxDate"  formControlName="birth_dateControl"  />
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            </div>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <!--Sex -->
+
+        <mat-form-field class="full-width">
+            <mat-label>Sexe</mat-label>
+            <mat-select formControlName="sexControl">
+                <mat-option *ngFor="let gender of genders" [value]="gender">
+                    {{ gender }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <!-- Observation list -->
+
+        <mat-form-field class="example-chip-list full-width">
+            <mat-label> Observations</mat-label>
+              <mat-chip-list #chipList aria-label="Observation selection" formControlName="observationsControl">
+                <mat-chip *ngFor="let o of observations ,let index=index" [selectable]="selectable"
+                    [removable]="removable" (removed)="remove(o)">
+                    {{o.name}}
+                     
+                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                </mat-chip>
+                <input *ngIf="filteredObservations&&filteredObservations.length" placeholder="Nouvelle observation..."
+                    #observationInput [matChipInputAddOnBlur]="addOnBlur" 
+                    [matAutocomplete]="auto" [matChipInputFor]="chipList"
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)" />
+            </mat-chip-list>
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                <mat-option *ngFor="let obs of filteredObservations  " [value]="obs">
+                    {{obs.name}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+
+        <!-- Description -->
+        <mat-form-field class="full-width" >
+            <mat-label>Description</mat-label>
+            <textarea matInput placeholder="" formControlName="descriptionControl" rows="4"></textarea>
+        </mat-form-field>
+        <button [disabled] ="form&&!form.valid" class="btn btn-success" (click)="submitFunc()"> Submit </button>
+        <button mat-fab color="primary" >Creer</button>
+        <button mat-button color="primary">Primary</button>
+
+
+    </form>
+</div>

@@ -7,7 +7,8 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss"
+          "style": "scss",
+          "standalone": true
         }
       },
       "root": "",
@@ -101,6 +102,37 @@
               "src/styles.scss"
             ],
             "scripts": []
+          }
+        }
+      }
+    },
+    "tst-form": {
+      "projectType": "library",
+      "root": "projects/tst-form",
+      "sourceRoot": "projects/tst-form/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/tst-form/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/tst-form/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/tst-form/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/tst-form/src/test.ts",
+            "tsConfig": "projects/tst-form/tsconfig.spec.json",
+            "karmaConfig": "projects/tst-form/karma.conf.js"
           }
         }
       }
