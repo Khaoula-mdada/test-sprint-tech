@@ -1,0 +1,28 @@
+.container {
+    height: 100%;
+    padding-top: 15rem;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.row {
+    height: 2rem;
+    border: 1px solid gray;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr) 2fr repeat(2, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 1px;
+    grid-row-gap: 0px;
+    margin-bottom: 1rem;
+    text-align: left;
+    align-items: center;
+}
+
+.row>div {
+    padding-left: 0.5rem;
+    border-right: 1px dashed gray;
+}
+
+.container {
+    width: 50rem;
+}

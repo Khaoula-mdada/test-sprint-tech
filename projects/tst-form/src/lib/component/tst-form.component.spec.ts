@@ -1,14 +1,17 @@
+import { DatePipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TstFormService } from '../tst-form.service';
+
 
 import { TstFormComponent } from './tst-form.component';
 
-describe('TstFormComponent', () => {
+describe('TstFormComponent', async() => {
   let component: TstFormComponent;
   let fixture: ComponentFixture<TstFormComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TstFormComponent ]
+      imports: [ TstFormComponent ],providers:[TstFormService,DatePipe]
     })
     .compileComponents();
 
@@ -17,7 +20,7 @@ describe('TstFormComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create',async () => {
     expect(component).toBeTruthy();
   });
 });
