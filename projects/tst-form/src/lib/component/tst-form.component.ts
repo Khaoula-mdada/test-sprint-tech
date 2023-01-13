@@ -39,7 +39,7 @@ import { Reporting, TstFormService } from '../tst-form.service'
 import { MatButtonModule } from '@angular/material/button';
 
 
-interface observation {
+interface Observation {
   id: number
   name: string
 }
@@ -76,24 +76,24 @@ export class TstFormComponent implements OnInit {
     ['email-error', 'Email valide obligatoire.'],
   ]);
   genders = ['Homme', 'Femme', 'Non-binaire'];
-  public allObservations: observation[] = [
+  public allObservations: Observation[] = [
     {
       id: 1,
-      name: 'Observation 1',
+      name: "Observation 1",
     },
     {
       id: 2,
-      name: 'Observation 2',
+      name: "Observation 2",
     },
     {
       id: 3,
-      name: 'Observation 3',
+      name: "Observation 3",
     },
   ];
   maxDate = new Date(new Date().setFullYear(new Date().getFullYear() - 100));
   form: any;
   filteredObservations: any[] = [];
-  observations: observation[] = [];
+  observations: Observation[] = [];
   separatorKeysCodes: number[] = [ENTER, COMMA];
   @ViewChild('observationInput') observationInput:
     | ElementRef<HTMLInputElement>
@@ -109,6 +109,7 @@ export class TstFormComponent implements OnInit {
 
     const op = JSON.parse(JSON.stringify(
       {
+        "id": 1,
         "author": {
           "first_name": "khaoula",
           "last_name": "mdada",
@@ -118,13 +119,20 @@ export class TstFormComponent implements OnInit {
         },
         "description": "dfgh,j./",
         "observations": [
-          1
+          {
+            "id": 1,
+            "name": "Observation 1",
+          },
+          {
+            "id": 2,
+            "name": "Observation 2",
+          },
         ]
       }))
     if (this.action === 'update') {
       this.service.buildForm(op)
-      this.observations = this.allObservations.filter((e) => op.observations.includes(e.id))
-      this.filteredObservations = this.allObservations.filter((e) => !op.observations.includes(e.id))
+      this.observations = op.observations as Observation[]
+      this.filteredObservations = this.allObservations.filter((e: Observation) => !op.observations.map((x: Observation) => x.id).includes(e.id))
     }
     else { this.service.buildForm(); this.filteredObservations = this.allObservations; }
     this.form = this.service.form;
@@ -145,7 +153,7 @@ export class TstFormComponent implements OnInit {
     this.form.get('observationsControl').setValue(this.observations.map(e => e.id));
   }
 
-  remove(observation: observation): void {
+  remove(observation: Observation): void {
     const index = this.observations.indexOf(observation);
     if (index >= 0) {
       this.observations.splice(index, 1);

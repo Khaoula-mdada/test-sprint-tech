@@ -85,9 +85,9 @@
             <mat-label>Description</mat-label>
             <textarea matInput placeholder="" formControlName="descriptionControl" rows="4"></textarea>
         </mat-form-field>
-        <button [disabled] ="form&&!form.valid" class="btn btn-success" (click)="submitFunc()"> Submit </button>
-        <button mat-fab color="primary" >Creer</button>
-        <button mat-button color="primary">Primary</button>
+        <button mat-stroked-button color="accent"  [disabled] ="form&&!form.valid" class="btn btn-success" (click)="submitFunc()"> Submit </button>
+    
+
 
 
     </form>

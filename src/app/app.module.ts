@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { CreationComponent } from 'src/pages/creation/creation.component';
 import { HomeComponent } from 'src/pages/home/home.component';
 import { UpdateComponent } from 'src/pages/update/update.component';
-import { AppRoutingModule } from './app-routing.module';
+import { AppRoutingModule, routes } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -23,26 +23,31 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
 import { HttpClientModule } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
+import { ListComponent } from 'src/pages/list/list.component';
+import { ActivatedRoute, RouterModule } from '@angular/router';
+import { RouterTestingModule } from "@angular/router/testing";
+import { TstFormService } from 'projects/tst-form/src/public-api';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     UpdateComponent,
     CreationComponent,
-    HomeComponent,NavigationButtonsComponent,HeaderComponent,FooterComponent],
+    HomeComponent,NavigationButtonsComponent,HeaderComponent,FooterComponent,ListComponent],
    
   imports: [
     BrowserModule, AppRoutingModule, BrowserAnimationsModule, MatButtonModule,TstFormComponent,MatFormFieldModule,
     MatSelectModule,
     MatInputModule,
     FormsModule,
-
+    RouterModule,
     ReactiveFormsModule,
     ReactiveFormsModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatOptionModule,
-    MatChipsModule,
+    MatOptionModule,RouterTestingModule,
+    MatChipsModule, RouterModule.forRoot([]),
     MatAutocompleteModule,MatIconModule,HttpClientModule,DatePipe
   ],
   providers: [DatePipe],
