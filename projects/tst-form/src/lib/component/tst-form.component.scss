@@ -18,5 +18,14 @@
   box-sizing: border-box;
   width: 100%;
 
+  .button{
+    margin-bottom: 1rem !important;
+  }
     }
+}
+
+@media screen and (max-width: 850px) {
+  .full-width {
+    padding-left: 1rem;
+  }
 }

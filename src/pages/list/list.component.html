@@ -1,4 +1,5 @@
 <div class="container" *ngIf="finalList&&finalList.length">
+    <h2>Liste des signalements</h2>
     <div class="row" *ngFor="let report of finalList">
         <div>{{report.author.first_name}}</div>
         <div>{{report.author.last_name}}</div>
