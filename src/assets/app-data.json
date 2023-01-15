@@ -1,0 +1,81 @@
+{
+    "reportings": [
+        {
+            "id": 1,
+            "author": {
+                "first_name": "khaoula",
+                "last_name": "mdada",
+                "birth_date": "1990-01-12",
+                "sex": "Femme",
+                "email": "kha@gmail.com"
+            },
+            "description": "Ceci est une description du signalement",
+            "observations": [
+                {
+                    "id": 3,
+                    "name": "Observation 3"
+                },
+                {
+                    "id": 2,
+                    "name": "Observation 2"
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "author": {
+                "first_name": "XXXXX",
+                "last_name": "YYYYYY",
+                "birth_date": "1950-10-01",
+                "sex": "Femme",
+                "email": "kha@gmail.com"
+            },
+            "description": "Ceci est une description du signalement",
+            "observations": [
+                {
+                    "id": 1,
+                    "name": "Observation 1"
+                },
+                {
+                    "id": 2,
+                    "name": "Observation 2"
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "author": {
+                "first_name": "ZZZZZZ",
+                "last_name": "WWWWWW",
+                "birth_date": "1990-11-01",
+                "sex": "Femme",
+                "email": "kha@gmail.com"
+            },
+            "description": "Ceci est une description du signalement",
+            "observations": [
+                {
+                    "id": 1,
+                    "name": "Observation 1"
+                },
+                {
+                    "id": 2,
+                    "name": "Observation 2"
+                }
+            ]
+        }
+    ],
+    "observations": [
+        {
+            "id": 1,
+            "name": "Observation 1"
+        },
+        {
+            "id": 2,
+            "name": "Observation 2"
+        },
+        {
+            "id": 3,
+            "name": "Observation 3"
+        }
+    ]
+}

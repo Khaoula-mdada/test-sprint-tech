@@ -4,6 +4,7 @@ import { CreationComponent } from 'src/pages/creation/creation.component';
 import { HomeComponent } from 'src/pages/home/home.component';
 import { UpdateComponent } from 'src/pages/update/update.component';
 import { AppRoutingModule, routes } from './app-routing.module';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -21,12 +22,13 @@ import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 import { ListComponent } from 'src/pages/list/list.component';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import {  RouterModule } from '@angular/router';
 import { RouterTestingModule } from "@angular/router/testing";
 import { TstFormService } from 'projects/tst-form/src/public-api';
+import { AppDataServicesService } from './app-data-services.service';
 
 
 @NgModule({
@@ -37,20 +39,19 @@ import { TstFormService } from 'projects/tst-form/src/public-api';
     HomeComponent,NavigationButtonsComponent,HeaderComponent,FooterComponent,ListComponent],
    
   imports: [
-    BrowserModule, AppRoutingModule, BrowserAnimationsModule, MatButtonModule,TstFormComponent,MatFormFieldModule,
+    BrowserModule, AppRoutingModule, MatButtonModule,TstFormComponent,MatFormFieldModule,BrowserAnimationsModule,
     MatSelectModule,
     MatInputModule,
     FormsModule,
     RouterModule,
     ReactiveFormsModule,
-    ReactiveFormsModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatOptionModule,RouterTestingModule,
     MatChipsModule, RouterModule.forRoot([]),
-    MatAutocompleteModule,MatIconModule,HttpClientModule,DatePipe
+    MatAutocompleteModule,MatIconModule,HttpClientModule,DatePipe,MatTooltipModule
   ],
-  providers: [DatePipe],
+  providers: [DatePipe,AppDataServicesService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

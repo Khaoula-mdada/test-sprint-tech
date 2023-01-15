@@ -6,7 +6,7 @@ import {
   Input,
   OnChanges,
   OnInit,
-  ViewChild,
+  ViewChild, AfterContentInit
 } from '@angular/core';
 import {
   FormBuilder,
@@ -21,12 +21,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
+import { DateAdapter, MatNativeDateModule, MatOptionModule } from '@angular/material/core';
 import {
   MatChipList,
   MatChipsModule,
 } from '@angular/material/chips';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { COMMA, ENTER, X } from '@angular/cdk/keycodes';
 import {
   MatAutocomplete,
   MatAutocompleteSelectedEvent,
@@ -35,8 +35,10 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { HttpClientModule } from '@angular/common/http';
-import { Reporting, TstFormService } from '../tst-form.service'
+import { TstFormService } from '../tst-form.service'
 import { MatButtonModule } from '@angular/material/button';
+import { take } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 
 interface Observation {
@@ -61,7 +63,7 @@ interface Observation {
     MatChipsModule,
     MatAutocompleteModule, MatIconModule, HttpClientModule], providers: [TstFormService]
 })
-export class TstFormComponent implements OnInit {
+export class TstFormComponent implements OnInit, AfterContentInit {
   @Input() action = 'create' || 'update'
   visible = true;
   selectable = true;
@@ -101,41 +103,27 @@ export class TstFormComponent implements OnInit {
   @ViewChild('auto') matAutocomplete: MatAutocomplete | undefined;
 
   constructor(
-    private service: TstFormService,
+    private service: TstFormService, private dateAdapter: DateAdapter<Date>
 
-  ) { }
+  ) {
+    this.dateAdapter.setLocale('en-GB');
+    this.form = this.service.form;
+
+  }
 
   ngOnInit(): void {
-
-    const op = JSON.parse(JSON.stringify(
-      {
-        "id": 1,
-        "author": {
-          "first_name": "khaoula",
-          "last_name": "mdada",
-          "birth_date": "5-01-2023",
-          "sex": "Femme",
-          "email": "kha@gmail.com"
-        },
-        "description": "dfgh,j./",
-        "observations": [
-          {
-            "id": 1,
-            "name": "Observation 1",
-          },
-          {
-            "id": 2,
-            "name": "Observation 2",
-          },
-        ]
-      }))
+  }
+  ngAfterContentInit(): void {
+    this.getObservations()
+  }
+  getObservations():void {
     if (this.action === 'update') {
-      this.service.buildForm(op)
-      this.observations = op.observations as Observation[]
-      this.filteredObservations = this.allObservations.filter((e: Observation) => !op.observations.map((x: Observation) => x.id).includes(e.id))
+      setTimeout(() => {
+        this.observations = this.form.get('observationsControl')?.value as Observation[];
+        this.filteredObservations = this.allObservations.filter((e: Observation) => !this.observations.map((x: Observation) => x.id).includes(e.id))
+      }, 100)
     }
-    else { this.service.buildForm(); this.filteredObservations = this.allObservations; }
-    this.form = this.service.form;
+    else { this.filteredObservations = this.allObservations; }
   }
 
   submitFunc() {

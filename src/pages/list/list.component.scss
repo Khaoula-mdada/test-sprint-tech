@@ -1,6 +1,8 @@
+
+@media screen and (min-width: 850px) {
 .container {
     height: 100%;
-    padding-top: 15rem;
+    padding-top: 10rem;
     text-align: center;
     margin: 0 auto;
 }
@@ -15,7 +17,9 @@
     grid-row-gap: 0px;
     margin-bottom: 1rem;
     text-align: left;
+    background-color: #e9e8e8;
     align-items: center;
+    width: 90%;
 }
 
 .row>div {
@@ -24,5 +28,43 @@
 }
 
 .container {
-    width: 50rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+}
+@media screen and (max-width: 850px) {
+
+    .row {
+        border: 1px solid gray;
+        background-color: #e9e8e8;
+        width: 70%;
+        margin-bottom: 1rem;
+ 
+        align-items: center;
+
+        display: flex;
+        flex-direction: column;
+        padding: 1rem;
+    }
+    .row>div :not(:last-child){
+    text-align: center;
+        
+        width: 90%;
+        height: 1.5rem;
+    }
+    .row :not(:last-child){
+        border-bottom: none;
+        margin-bottom: 0.5rem;
+        
+    }
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    
+    }
+    
 }

@@ -13,8 +13,6 @@ export class UpdateComponent implements OnInit {
   ngOnInit(): void {
     if(this._Activatedroute?.params)
     {this._Activatedroute?.params.subscribe(params => { 
-      console.log(params['id']); 
   });}
   }
-
 }
