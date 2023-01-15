@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { TstFormService } from 'tst-form';
+
 import { Reporting, ReportingAnswer } from 'projects/tst-form/src/lib/types';
-import { AppDataServicesService } from 'src/app/app-data-services.service';
 import { HttpClient } from '@angular/common/http';
+import { TstFormService } from 'projects/tst-form/src/public-api';
 
 
 @Component({

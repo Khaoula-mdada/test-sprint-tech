@@ -1,8 +1,16 @@
+
 stages:
+ - test
  - build
  - package
  - deploy
-
+test:
+  image: weboaks/node-karma-protractor-chrome
+  stage: test
+  script:
+  - npm install -g @angular/cli@14.2.0
+  - npm ci
+  - npm test --browsers=ChromeHeadless --no-watch
 build:
   stage: build
   image: node:latest
