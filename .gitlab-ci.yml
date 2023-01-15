@@ -1,30 +1,9 @@
-
-stages:
- - test
- - build
- - package
- - deploy
+image: weboaks/node-karma-protractor-chrome
+before_script:
+- npm install
+cache:
+  paths:
+    - node_modules/
 test:
-  image: weboaks/node-karma-protractor-chrome
-  stage: test
   script:
-  - npm install -g @angular/cli@14.2.0
-  - npm ci
   - npm test
-build:
-  stage: build
-  image: node:latest
-  only:
-    - master
-  script:
-    - npm install -g @angular/cli@14.2.0
-    - npm install
-    - ng build tst-form
-    - ng build 
-  artifacts:
-    paths:
-      - dist/
-    expire_in: 2 hours
-  cache:
-    paths:
-      - node_modules/
