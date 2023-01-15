@@ -49,6 +49,7 @@ export class TstFormService implements OnInit {
         if (data && id) {
           const reporting = data.reportings.map((x: any) => JSON.parse(JSON.stringify(x))).filter((e: ReportingAnswer) => { return e.id === id })[0]
           if (reporting) { this.buildForm(reporting) }
+          console.log(reporting)
         }
       })
     }
@@ -87,6 +88,9 @@ export class TstFormService implements OnInit {
       this.input.description = this.form.get('descriptionControl')?.value
       this.input.observations = this.form.get('observationsControl')?.value
     }
+    this.form.reset()
+    this.initForm()
+  
   }
 
   reset() {

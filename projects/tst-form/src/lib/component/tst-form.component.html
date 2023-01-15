@@ -86,7 +86,9 @@
             <textarea matInput placeholder="" formControlName="descriptionControl" rows="4"></textarea>
         </mat-form-field>
         <button mat-stroked-button color="accent" [disabled] ="form&&!form.valid"  class="btn btn-success button"
-            (click)="submitFunc()"> Submit </button>
+            (click)="submitFunc()">Valider </button>
+        <button mat-stroked-button color="accent"  class="btn btn-success button"
+            (click)="cancel()">Annuler </button>
 
 
 

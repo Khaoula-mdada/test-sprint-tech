@@ -38,7 +38,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { TstFormService } from '../tst-form.service'
 import { MatButtonModule } from '@angular/material/button';
 import { take } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 interface Observation {
@@ -103,7 +103,7 @@ export class TstFormComponent implements OnInit, AfterContentInit {
   @ViewChild('auto') matAutocomplete: MatAutocomplete | undefined;
 
   constructor(
-    private service: TstFormService, private dateAdapter: DateAdapter<Date>
+    private service: TstFormService, private dateAdapter: DateAdapter<Date>,private route: Router
 
   ) {
     this.dateAdapter.setLocale('en-GB');
@@ -128,8 +128,13 @@ export class TstFormComponent implements OnInit, AfterContentInit {
 
   submitFunc() {
     this.service.submitForm();
-    this.service.reset();
     this.observations = []
+    if(this.action==='update'){this.service.reset();this.route.navigate(['/list'])}
+    else{this.service.reset();this.route.navigate(['/create'])}
+  }
+  cancel(){
+    if(this.action==='update'){this.service.reset();this.route.navigate(['/list'])}
+    else{this.service.reset();this.route.navigate(['/create'])}
   }
 
   add(event: MatChipInputEvent): void {
@@ -162,6 +167,7 @@ export class TstFormComponent implements OnInit, AfterContentInit {
     this.filteredObservations.splice(this.filteredObservations.indexOf(obs), 1);
     if (this.observationInput) this.observationInput.nativeElement.value = '';
   }
+
 }
 
 
