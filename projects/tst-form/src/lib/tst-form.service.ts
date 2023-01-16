@@ -1,16 +1,16 @@
 import { DatePipe } from '@angular/common';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Injectable, Input, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { catchError, debounceTime, map, Observable, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, debounceTime, map, Observable, throwError } from 'rxjs';
 import { Observation, Reporting, ReportingAnswer } from './types';
 
 
 
 @Injectable(
 )
-export class TstFormService implements OnInit {
+export class TstFormService {
 
   defaultUserInput: Reporting = {
     author: {
@@ -26,29 +26,27 @@ export class TstFormService implements OnInit {
   reporting: ReportingAnswer | null = null
   private baseUrl: string = "../../../../../assets/app-data.json";
   private input: Reporting = this.defaultUserInput
-
+  id: number | null = null
   pattern = '[A-z0-9 ]{4,50}';
-  message = ''
+  message$ = new BehaviorSubject<string>("");
+  observations$ = new BehaviorSubject<Observation[]>([]);
   constructor(private datePipe: DatePipe, private http: HttpClient, private route: ActivatedRoute) {
     this.initForm()
   }
   public form: FormGroup = new FormGroup({});
-  ngOnInit(): void {
 
-  }
   initForm() {
-    let id: number | null = null
+    this.getObservations()
     if (this.route?.params) {
       this.route?.params.subscribe(params => {
-        id = parseInt(params['id'])
+        this.id = parseInt(params['id'])
       });
     }
-    if (id) {
+    if (this.id) {
       this.http.get(`${this.baseUrl}`).subscribe((data: any) => {
-        if (data && id) {
-          const reporting = data.reportings.map((x: any) => JSON.parse(JSON.stringify(x))).filter((e: ReportingAnswer) => { return e.id === id })[0]
+        if (data && this.id) {
+          const reporting = data.reportings.map((x: any) => JSON.parse(JSON.stringify(x))).filter((e: ReportingAnswer) => { return e.id === this.id })[0]
           if (reporting) { this.buildForm(reporting) }
-          console.log(reporting)
         }
       })
     }
@@ -76,8 +74,8 @@ export class TstFormService implements OnInit {
     this.form.addControl('descriptionControl', new FormControl(userInput.description));
   }
 
-
   submitForm() {
+    
     if (this.form) {
       this.input.author.last_name = this.form.get('last_nameControl')?.value
       this.input.author.first_name = this.form.get('first_nameControl')?.value
@@ -87,14 +85,17 @@ export class TstFormService implements OnInit {
       this.input.description = this.form.get('descriptionControl')?.value
       this.input.observations = this.form.get('observationsControl')?.value
     }
-    this.createProduct(this.input)
-    this.form.reset()
-    this.initForm()
-
+    if (!this.id) { this.createProduct(this.input) } else { this.editProduct(this.input, this.id)}
   }
 
   reset() {
-    this.form.reset()
+     this.form.get('last_nameControl')?.setValue( this.defaultUserInput.author.last_name)
+     this.form.get('first_nameControl')?.setValue(this.defaultUserInput.author.first_name)
+     this.form.get('birth_dateControl')?.setValue(this.defaultUserInput.author.birth_date)
+     this.form.get('emailControl')?.setValue(this.defaultUserInput.author.email)
+     this.form.get('sexControl')?.setValue(this.defaultUserInput.author.sex)
+     this.form.get('descriptionControl')?.setValue(this.defaultUserInput.description)
+     this.form.get('observationsControl')?.setValue(this.defaultUserInput.observations)
   }
 
   public getReporting(): Observable<Reporting[]> {
@@ -104,35 +105,34 @@ export class TstFormService implements OnInit {
           return JSON.parse(JSON.stringify(e)) as Reporting
         })
       })
-
     );
   }
 
-  createProduct(reporting: Reporting) {
+  createProduct(reporting: Reporting):void {
     this.http.post<HttpErrorResponse>(`${this.baseUrl}`, reporting).subscribe(
-      (response: HttpErrorResponse) => {
-        response.status === 204 ? this.message = 'Signalement ajouté' : response.status === 204 ? this.message = 'Email existe deja' : this.message = 'Une Erreur s est produite, merci de renouveller votre demande ulterieurement'
+      data => { this.message$.next('Signalement ajouté!'); },
+      err => {
+        this.message$.next(err.status === 404 ? 'Email existe deja!' : 'Erreur inconnue');
       }
     )
   }
 
-  editProduct(reporting: ReportingAnswer) {
-    this.http.post<HttpErrorResponse>(`${this.baseUrl}` + reporting.id, reporting).subscribe(
-      (response: HttpErrorResponse) => {
-        response.status === 204 ? this.message = 'Modification faite' : response.status === 204 ? this.message = 'Email existe deja' : this.message = 'Une Erreur s est produite, merci de renouveller votre demande ulterieurement'
+  editProduct(reporting: Reporting, id: number) :void{
+    this.http.put<HttpErrorResponse>(`${this.baseUrl}` + id, reporting).subscribe(
+      data => { this.message$.next('Signalement modifié') },
+      err => {
+        this.message$.next(err.status === 404 ? 'Email existe deja!' : 'Erreur inconnue');
       }
-
-    );
+    )
   }
 
-  public getObservations(): Observable<Observation[]> {
-    return this.http.get<any[]>(`${this.baseUrl}`).pipe(
-      map((observations: any[]) => {
-        return observations.map((e) => {
-          return JSON.parse(JSON.stringify(e)) as Observation
-        })
-      })
-    );
+   getObservations(): void {
+   this.http.get<any[]>(`${this.baseUrl}`
+    ).subscribe((data: any) => {
+      if (data ) {
+        this.observations$.next(data.observations) 
+      }
+    });
   }
 
 }

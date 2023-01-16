@@ -81,22 +81,10 @@ export class TstFormComponent implements OnInit, AfterContentInit {
     ['email-error', 'Email valide obligatoire.'],
   ]);
   genders = ['Homme', 'Femme', 'Non-binaire'];
-  public allObservations: Observation[] = [
-    {
-      id: 1,
-      name: "Observation 1",
-    },
-    {
-      id: 2,
-      name: "Observation 2",
-    },
-    {
-      id: 3,
-      name: "Observation 3",
-    },
-  ];
+  public allObservations: Observation[] = [];
   maxDate = new Date(new Date().setFullYear(new Date().getFullYear() - 100));
   form: any;
+  message='';
   filteredObservations: any[] = [];
   observations: Observation[] = [];
   separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -107,37 +95,38 @@ export class TstFormComponent implements OnInit, AfterContentInit {
 
   constructor(
     private service: TstFormService, private dateAdapter: DateAdapter<Date>,private route: Router
-
   ) {
     this.dateAdapter.setLocale('en-GB');
     this.form = this.service.form;
-
+    this.observations = [];
+    
   }
+  ngOnInit(): void {}
 
-  ngOnInit(): void {
-  }
   ngAfterContentInit(): void {
     this.getObservations()
   }
+
   getObservations():void {
+    this.service.observations$?.subscribe((value)=> {if(value){this.allObservations=value
     if (this.action === 'update') {
       setTimeout(() => {
         this.observations = this.form.get('observationsControl')?.value as Observation[];
         this.filteredObservations = this.allObservations.filter((e: Observation) => !this.observations.map((x: Observation) => x.id).includes(e.id))
       }, 100)
     }
-    else { this.filteredObservations = this.allObservations; }
+    else { this.filteredObservations = this.allObservations; }}})
   }
 
   submitFunc() {
-    this.service.submitForm();
-    this.observations = []
-    // if(this.action==='update'){this.service.reset();this.route.navigate(['/list'])}
-    // else{this.service.reset();this.route.navigate(['/create'])}
+   this.service.submitForm();
+  
+   this.service.message$?.subscribe((value)=>{if(value){this.message=value}})
   }
   cancel(){
-    // if(this.action==='update'){this.service.reset();this.route.navigate(['/list'])}
-    // else{this.service.reset();this.route.navigate(['/create'])}
+    if(this.action==='update'){this.service.reset();this.route.navigate(['/list'])}
+    else{this.service.reset();this.route.navigate(['/create'])}
+    this.observations = [];
   }
 
   add(event: MatChipInputEvent): void {

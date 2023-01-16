@@ -1,4 +1,5 @@
 <div *ngIf="form " class="container">
+    <div *ngIf="message" class="error">{{message}}</div>
     <form class="form"  [formGroup]="form">
         <!--First_name -->
         <mat-form-field class="full-width" *ngIf="this.form.get('last_nameControl')">
@@ -59,7 +60,7 @@
         </mat-form-field>
 
         <!-- Observation list -->
-        <mat-form-field class="example-chip-list full-width" *ngIf="this.form.get('observationsControl')&&this.form.get('observationsControl').value">
+        <mat-form-field class="example-chip-list full-width" *ngIf="this.form.get('observationsControl')&&this.form.get('observationsControl').value &&allObservations">
             <mat-label> OBSERVATIONS</mat-label>
               <mat-chip-list #chipList aria-label="Observation selection" formControlName="observationsControl">
                 <mat-chip *ngFor="let o of observations ,let index=index" [selectable]="selectable"
@@ -85,14 +86,10 @@
             <mat-label>DESCRIPTION</mat-label>
             <textarea matInput placeholder="" formControlName="descriptionControl" rows="4"></textarea>
         </mat-form-field>
-        <button mat-stroked-button color="accent" [disabled] ="form&&!form.valid"  class="btn btn-success button"
+        <div class="buttons"><button mat-stroked-button color="accent" [disabled] ="form&&!form.valid"  class="btn btn-success button"
             (click)="submitFunc()">Valider </button>
-        <button mat-stroked-button color="accent"  class="btn btn-success button"
-            (click)="cancel()">Annuler </button>
-
-
-
-
+        <button mat-stroked-button color="accent"  [disabled] ="form&&!form.dirty&&!message" class="btn btn-success button"
+            (click)="cancel()">Annuler </button></div>
+        
     </form>
-    <div *ngIf="form.message">hello</div>
 </div>
