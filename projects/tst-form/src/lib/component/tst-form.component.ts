@@ -38,7 +38,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { TstFormService } from '../tst-form.service'
 import { MatButtonModule } from '@angular/material/button';
 import { take } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
+import { trigger, state, style, transition, animate } from '@angular/animations';
+
+
 
 
 interface Observation {
@@ -61,7 +64,7 @@ interface Observation {
     MatOptionModule,
     NgFor, MatButtonModule,
     MatChipsModule,
-    MatAutocompleteModule, MatIconModule, HttpClientModule], providers: [TstFormService]
+    MatAutocompleteModule, MatIconModule, HttpClientModule], providers: [TstFormService],animations:[]
 })
 export class TstFormComponent implements OnInit, AfterContentInit {
   @Input() action = 'create' || 'update'
@@ -129,12 +132,12 @@ export class TstFormComponent implements OnInit, AfterContentInit {
   submitFunc() {
     this.service.submitForm();
     this.observations = []
-    if(this.action==='update'){this.service.reset();this.route.navigate(['/list'])}
-    else{this.service.reset();this.route.navigate(['/create'])}
+    // if(this.action==='update'){this.service.reset();this.route.navigate(['/list'])}
+    // else{this.service.reset();this.route.navigate(['/create'])}
   }
   cancel(){
-    if(this.action==='update'){this.service.reset();this.route.navigate(['/list'])}
-    else{this.service.reset();this.route.navigate(['/create'])}
+    // if(this.action==='update'){this.service.reset();this.route.navigate(['/list'])}
+    // else{this.service.reset();this.route.navigate(['/create'])}
   }
 
   add(event: MatChipInputEvent): void {

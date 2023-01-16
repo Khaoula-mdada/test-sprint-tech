@@ -1,6 +1,8 @@
 import { HttpClient, HttpClientModule, } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule } from '@angular/router';
+
 import { TstFormComponent } from './component/tst-form.component';
 
 
@@ -10,7 +12,7 @@ import { TstFormComponent } from './component/tst-form.component';
     
   ],
   imports: [
-    HttpClientModule
+    HttpClientModule,TstFormComponent,RouterModule.forRoot([]), BrowserAnimationsModule
   ],
   exports: [
   ],

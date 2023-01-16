@@ -1,8 +1,15 @@
+
 stages:
+ - test
  - build
  - package
  - deploy
-
+before_script:
+- npm install
+test:
+  image: weboaks/node-karma-protractor-chrome
+  script:
+  - npm test
 build:
   stage: build
   image: node:latest

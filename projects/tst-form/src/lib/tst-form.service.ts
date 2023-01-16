@@ -8,7 +8,6 @@ import { Observation, Reporting, ReportingAnswer } from './types';
 
 
 
-
 @Injectable(
 )
 export class TstFormService implements OnInit {
@@ -25,11 +24,11 @@ export class TstFormService implements OnInit {
     observations: []
   }
   reporting: ReportingAnswer | null = null
-  @Input() baseUrl: string = "api/";
+  private baseUrl: string = "../../../../../assets/app-data.json";
   private input: Reporting = this.defaultUserInput
 
   pattern = '[A-z0-9 ]{4,50}';
-
+  message = ''
   constructor(private datePipe: DatePipe, private http: HttpClient, private route: ActivatedRoute) {
     this.initForm()
   }
@@ -45,7 +44,7 @@ export class TstFormService implements OnInit {
       });
     }
     if (id) {
-      this.http.get('../../../../../assets/app-data.json').subscribe((data: any) => {
+      this.http.get(`${this.baseUrl}`).subscribe((data: any) => {
         if (data && id) {
           const reporting = data.reportings.map((x: any) => JSON.parse(JSON.stringify(x))).filter((e: ReportingAnswer) => { return e.id === id })[0]
           if (reporting) { this.buildForm(reporting) }
@@ -88,9 +87,10 @@ export class TstFormService implements OnInit {
       this.input.description = this.form.get('descriptionControl')?.value
       this.input.observations = this.form.get('observationsControl')?.value
     }
+    this.createProduct(this.input)
     this.form.reset()
     this.initForm()
-  
+
   }
 
   reset() {
@@ -98,7 +98,7 @@ export class TstFormService implements OnInit {
   }
 
   public getReporting(): Observable<Reporting[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/reportings`).pipe(
+    return this.http.get<any[]>('../../../../../assets/app-data.json').pipe(
       map((reportings: any[]) => {
         return reportings.map((e) => {
           return JSON.parse(JSON.stringify(e)) as Reporting
@@ -109,38 +109,29 @@ export class TstFormService implements OnInit {
   }
 
   createProduct(reporting: Reporting) {
-    this.http.post<number>(`${this.baseUrl}/reportings`, reporting).pipe(
-      catchError((error: HttpErrorResponse) => {
-        console.error(error);
-        if (error.status === 404) {
-          return JSON.stringify(error.error)
-        }
-        return throwError((error));
-      })
-
-    );
+    this.http.post<HttpErrorResponse>(`${this.baseUrl}`, reporting).subscribe(
+      (response: HttpErrorResponse) => {
+        response.status === 204 ? this.message = 'Signalement ajouté' : response.status === 204 ? this.message = 'Email existe deja' : this.message = 'Une Erreur s est produite, merci de renouveller votre demande ulterieurement'
+      }
+    )
   }
 
   editProduct(reporting: ReportingAnswer) {
-    this.http.post<number>(`${this.baseUrl}/reportings/` + reporting.id, reporting).pipe(
-      catchError((error: HttpErrorResponse) => {
-        console.error(error);
-        if (error.status === 404) {
-          return JSON.stringify(error.error)
-        }
-        return throwError((error));
-      })
+    this.http.post<HttpErrorResponse>(`${this.baseUrl}` + reporting.id, reporting).subscribe(
+      (response: HttpErrorResponse) => {
+        response.status === 204 ? this.message = 'Modification faite' : response.status === 204 ? this.message = 'Email existe deja' : this.message = 'Une Erreur s est produite, merci de renouveller votre demande ulterieurement'
+      }
+
     );
   }
 
   public getObservations(): Observable<Observation[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/observations`).pipe(
+    return this.http.get<any[]>(`${this.baseUrl}`).pipe(
       map((observations: any[]) => {
         return observations.map((e) => {
           return JSON.parse(JSON.stringify(e)) as Observation
         })
       })
-
     );
   }
 
