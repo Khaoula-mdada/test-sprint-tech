@@ -132,12 +132,12 @@ export class TstFormComponent implements OnInit, AfterContentInit {
   submitFunc() {
     this.service.submitForm();
     this.observations = []
-    if(this.action==='update'){this.service.reset();this.route.navigate(['/list'])}
-    else{this.service.reset();this.route.navigate(['/create'])}
+    // if(this.action==='update'){this.service.reset();this.route.navigate(['/list'])}
+    // else{this.service.reset();this.route.navigate(['/create'])}
   }
   cancel(){
-    if(this.action==='update'){this.service.reset();this.route.navigate(['/list'])}
-    else{this.service.reset();this.route.navigate(['/create'])}
+    // if(this.action==='update'){this.service.reset();this.route.navigate(['/list'])}
+    // else{this.service.reset();this.route.navigate(['/create'])}
   }
 
   add(event: MatChipInputEvent): void {
